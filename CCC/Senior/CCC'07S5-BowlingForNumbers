@@ -1,0 +1,78 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static PrintWriter pr = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+	static StringTokenizer st;
+
+	static int n, k, w, t;
+	static int[] psa = new int[30001];
+	static int[][] dp = new int[501][30001];
+	
+	public static void main(String[] args) throws IOException {
+		t = readInt();
+		
+		while(t > 0) {
+			Arrays.fill(psa, 0);
+			for(int j = 0; j < 501; j++) {
+				Arrays.fill(dp[j], 0);
+			}
+			
+			n = readInt(); k = readInt(); w = readInt();
+
+			for(int j = 1; j <= n; j++) {
+				psa[j] = readInt() + psa[j - 1];
+			}
+			
+			for(int i = 1; i <= k; i++) {
+				for(int j = 1; j <= n; j++) {
+					if(i * w >= j) {
+						dp[i][j] = psa[j];
+					} else {
+						dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j - w] + psa[j] - psa[j - w]);
+					}
+				}
+			}
+			
+			System.out.println(dp[k][n]);
+			
+			t--;
+		}
+	}
+	
+	
+	
+	static String next() throws IOException {
+		while(st == null || !st.hasMoreTokens()) {
+			st = new StringTokenizer(br.readLine().trim());
+		}
+		
+		return st.nextToken();
+	}
+	
+	
+	static int readInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+	
+	
+	static double readDouble() throws IOException {
+		return Double.parseDouble(next());
+	}
+	
+	
+	static long readLong() throws IOException {
+		return Long.parseLong(next());
+	}
+	
+	
+	static char readCharacter() throws IOException {
+		return next().charAt(0);
+	}
+	
+	
+	static String readLine() throws IOException {
+		return br.readLine().trim();
+	}
+}
